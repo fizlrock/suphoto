@@ -1,0 +1,135 @@
+databaseChangeLog:
+- changeSet:
+    id:  "1"
+    author:  dev.fizlrock
+    labels: init-database
+    comment: Создание таблицы под события
+    changes:
+    - createTable:
+        tableName:  event
+        remarks: Таблица для событий
+        columns:
+          - column:
+              name:  id
+              type:  int
+              autoIncrement:  true
+              constraints:
+                primaryKey:  true
+                nullable:  false
+          - column:
+              name:  title
+              type:  varchar(250)
+              constraints:
+                nullable:  false
+          - column:
+              name:  location
+              type:  varchar(250)
+              constraints:
+                nullable:  false
+          - column:
+              name:  startTime
+              type:  datetime
+              constraints:
+                nullable:  false
+          - column:
+              name:  endTime
+              type:  datetime
+              constraints:
+                nullable:  false
+- changeSet:
+    id: "2"
+    author: dev.fizlrock
+    labels: init-database
+    comment: Создание таблиц для пользователей и их прав
+    changes:
+        - createTable:
+                tableName: users
+                remarks: Таблица для пользователей
+                columns:
+                    - column:
+                            name:  id
+                            type:  int
+                            autoIncrement:  true
+                            constraints:
+                                primaryKey:  true
+                                nullable:  false
+                    - column:
+                            name: username
+                            type: varchar(30)
+                            constraints:
+                                nullable:  false
+                                uniquie: true
+                    - column:
+                            name: firstName
+                            type: varchar(30)
+                    - column:
+                            name: lastName
+                            type: varchar(30)
+                    - column:
+                            name: patronymic
+                            type: varchar(30)
+        - createTable:
+                tableName: roles
+                remarks: Таблиц для ролей пользователей(инструктор, администратор)
+
+                columns:
+                    - column:
+                        name:  id
+                        type:  int
+                        autoIncrement:  true
+                        constraints:
+                            primaryKey:  true
+                            nullable:  false
+                    - column:
+                        name: roleName
+                        type: varchar(30)
+                        constraints:
+                            nullable: false
+                            unique: true
+                    
+    
+- changeSet:
+    id: "3"
+    author: dev.fizlrock
+    labels: init-database
+    comment: Создание таблиц связи пользователей и ролей
+
+    changes:
+        - createTable:
+                tableName: user_roles
+                columns:
+                    - column:
+                        name:  user_id
+                        type:  int
+                        constraints:
+                            primaryKey:  true
+                            nullable:  false
+                    - column:
+                        name:  role_id
+                        type:  int
+                        constraints:
+                            primaryKey:  true
+                            nullable:  false
+        - addForeignKeyConstraint:
+                baseColumnNames:  user_id
+                baseTableName:  user_roles
+                constraintName:  user_roles_user_fk
+                deferrable:  true
+                initiallyDeferred:  true
+                onDelete:  CASCADE
+                onUpdate:  RESTRICT
+                referencedColumnNames:  id
+                referencedTableName:  users
+                validate:  true
+        - addForeignKeyConstraint:
+                baseColumnNames:  role_id
+                baseTableName:  user_roles
+                constraintName:  user_roles_role_fk
+                deferrable:  true
+                initiallyDeferred:  true
+                onDelete:  CASCADE
+                onUpdate:  RESTRICT
+                referencedColumnNames:  id
+                referencedTableName:  roles
+                validate:  true
+        
