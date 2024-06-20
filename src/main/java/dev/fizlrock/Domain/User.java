@@ -1,29 +1,18 @@
 package dev.fizlrock.Domain;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Length;
 
 import lombok.Builder;
-import lombok.Data;
 
-@Data
 @Builder
-@Entity
 @Table(name = "users")
-public class User {
+public class User extends BaseEntity{
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  protected Integer id;
 
   @Column(name = "username", nullable = false)
   @Length(min = 5, max = 30)
