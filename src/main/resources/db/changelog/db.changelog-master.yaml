@@ -1,6 +1,6 @@
 databaseChangeLog:
 - changeSet:
-    id:  "1"
+    id:  '1'
     author:  dev.fizlrock
     labels: init-database
     comment: Создание таблицы под события
@@ -27,12 +27,12 @@ databaseChangeLog:
               constraints:
                 nullable:  false
           - column:
-              name:  startTime
+              name:  start_time
               type:  datetime
               constraints:
                 nullable:  false
           - column:
-              name:  endTime
+              name:  end_time
               type:  datetime
               constraints:
                 nullable:  false
@@ -60,10 +60,10 @@ databaseChangeLog:
                                 nullable:  false
                                 uniquie: true
                     - column:
-                            name: firstName
+                            name: first_name
                             type: varchar(30)
                     - column:
-                            name: lastName
+                            name: last_name
                             type: varchar(30)
                     - column:
                             name: patronymic
@@ -81,7 +81,7 @@ databaseChangeLog:
                             primaryKey:  true
                             nullable:  false
                     - column:
-                        name: roleName
+                        name: role_name
                         type: varchar(30)
                         constraints:
                             nullable: false
@@ -91,7 +91,8 @@ databaseChangeLog:
 - changeSet:
     id: "3"
     author: dev.fizlrock
-    labels: init-database
+    labels: 
+         init-database
     comment: Создание таблиц связи пользователей и ролей
 
     changes:
@@ -132,4 +133,25 @@ databaseChangeLog:
                 referencedColumnNames:  id
                 referencedTableName:  roles
                 validate:  true
-        
+
+
+- changeSet:
+     id: "4"
+     author: fizlrock
+     labels: init-database
+     comment: Удаление лишних таблиц
+     changes:
+        - dropTable:
+              tableName: user_roles
+        - dropTable:
+              tableName: roles
+        - addColumn:
+              tableName: users
+              columns: 
+                  - column:
+                      name: role
+                      type: varchar(50)
+                      defaultValue: None
+                  
+
+                  -
