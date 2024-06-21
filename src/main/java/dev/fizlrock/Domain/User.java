@@ -1,8 +1,13 @@
 package dev.fizlrock.Domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Length;
@@ -10,9 +15,9 @@ import org.hibernate.validator.constraints.Length;
 import lombok.Builder;
 
 @Builder
+@Entity
 @Table(name = "users")
-public class User extends BaseEntity{
-
+public class User extends BaseEntity {
 
   @Column(name = "username", nullable = false)
   @Length(min = 5, max = 30)
@@ -34,6 +39,10 @@ public class User extends BaseEntity{
   @Builder.Default
   @Enumerated(EnumType.STRING)
   protected Role role = Role.None;
+
+  @Builder.Default
+  @ManyToMany(mappedBy = "staff")
+  protected Set<Event> events = new HashSet<>();
 
   public static enum Role {
     None, Client, God, Trainer

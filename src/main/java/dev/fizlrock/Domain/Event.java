@@ -1,14 +1,21 @@
 package dev.fizlrock.Domain;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 /**
  * Event
  */
 @Table(name = "events")
+@Entity
 public class Event extends BaseEntity {
 
   @Column(name = "title", nullable = false)
@@ -23,13 +30,8 @@ public class Event extends BaseEntity {
   @Column(name = "end_time", nullable = false)
   protected LocalDateTime endTime;
 
-  // Name | Type | Nullable | Default
-  // ------------+--------------------------------+----------+---------
-  // id | integer | "NO" |
-  // title | character varying(250) | "NO" |
-  // location | character varying(250) | "NO" |
-  // start_time | timestamp(6) without time zone | "NO" |
-  // end_time | timestamp(6) without time zone | "NO" |
-  // Indexes:
+  @ManyToMany
+  @JoinTable(name = "events_staff", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "staff_id"))
+  protected Set<User> staff = new HashSet<>();
 
 }

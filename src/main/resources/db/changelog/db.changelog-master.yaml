@@ -153,5 +153,74 @@ databaseChangeLog:
                       type: varchar(50)
                       defaultValue: None
                   
+- changeSet:
+      id: "5"
+      author: fizlrock 
+      labels: init-database, renaming
+      comment: Переименование таблицы с событиями, а то как-то не по феншую
+      changes:
+        - renameTable:
+              oldTableName: event 
+              newTableName: events
 
-                  -
+- changeSet:
+      id: "6"
+      author: fizlrock 
+      labels: init-database
+      comment: Создание таблицы для связи Users-Events
+      changes:
+          - createTable:
+              tableName: events_users
+              columns:
+                  - column:
+                      name: event_id
+                      type: int
+                  - column:
+                      name: user_id
+                      type: int
+
+          - addForeignKeyConstraint:
+              baseTableName: events_users
+              baseColumnNames: event_id
+              constraintName: events_users_event_id_fk
+              referencedTableName: events
+              referencedColumnNames: id
+              onDelete: restrict
+              onUpdate: restrict
+          - addForeignKeyConstraint:
+              baseTableName: events_users
+              baseColumnNames: user_id
+              constraintName: events_users_user_id_fk
+              referencedTableName: users
+              referencedColumnNames: id
+              onDelete: restrict
+              onUpdate: restrict
+
+- changeSet:
+      id: "7"
+      author: fizlrock 
+      comment: Переименование колонки, т.к. Hibernate настроить сложнее
+      changes:
+        - renameColumn:
+              tableName: events_users
+              oldColumnName: user_id
+              newColumnName: staff_id
+
+- changeSet:
+      id: "8"
+      author: fizlrock 
+      comment: Добавление ограничение на events_users
+      changes:
+        - addPrimaryKey:
+              tableName: events_users
+              columnNames: event_id, staff_id
+              constraintName: events_usert_pk
+
+- changeSet:
+      id: "9"
+      author: fizlrock 
+      comment: Переименование таблицы, с hibernate лень разбираться
+      changes:
+          - renameTable:
+              oldTableName: events_users
+              newTableName: events_staff

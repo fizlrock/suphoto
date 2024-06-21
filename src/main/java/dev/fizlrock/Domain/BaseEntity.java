@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
  */
 @MappedSuperclass
 @Data
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class BaseEntity {
