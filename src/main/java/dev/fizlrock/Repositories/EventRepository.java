@@ -7,6 +7,6 @@ import dev.fizlrock.Domain.Event;
 /**
  * EventRepository
  */
-public interface EventRepository extends PagingAndSortingRepository<Event, Integer> {
+public interface EventRepository extends PagingAndSortingRepository<Event, Long> {
 
 }

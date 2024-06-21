@@ -23,6 +23,6 @@ public abstract class BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  protected Integer id;
+  protected Long id;
 
 }

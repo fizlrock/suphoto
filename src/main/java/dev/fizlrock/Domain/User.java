@@ -41,7 +41,7 @@ public class User extends BaseEntity {
   protected Role role = Role.None;
 
   @Builder.Default
-  @ManyToMany(mappedBy = "staff")
+  @ManyToMany
   protected Set<Event> events = new HashSet<>();
 
   public static enum Role {
