@@ -11,11 +11,14 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import lombok.Data;
+
 /**
  * Event
  */
 @Table(name = "events")
 @Entity
+@Data
 public class Event extends BaseEntity {
 
   @Column(name = "title", nullable = false)
@@ -33,5 +36,7 @@ public class Event extends BaseEntity {
   @ManyToMany
   @JoinTable(name = "events_users", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "staff_id"))
   protected Set<User> staff = new HashSet<>();
+
+    
 
 }

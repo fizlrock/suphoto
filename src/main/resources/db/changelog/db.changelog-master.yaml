@@ -225,3 +225,24 @@ databaseChangeLog:
           - renameTable:
               oldTableName: events_users
               newTableName: events_staff
+- changeSet:
+      id: "10"
+      author: fizlrock 
+      comment: Изменение типа айдишников с int на long
+      changes:
+          - modifyDataType:
+              tableName: users
+              columnName: id
+              newDataType: bigint
+          - modifyDataType:
+              tableName: events
+              columnName: id
+              newDataType: bigint
+          - modifyDataType:
+              tableName: events_users
+              columnName: event_id
+              newDataType: bigint
+          - modifyDataType:
+              tableName: events_users
+              columnName: staff_id
+              newDataType: bigint

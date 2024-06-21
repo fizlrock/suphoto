@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -40,8 +42,9 @@ public class User extends BaseEntity {
   @Enumerated(EnumType.STRING)
   protected Role role = Role.None;
 
-  @Builder.Default
+  // @Builder.Default
   @ManyToMany
+  @JoinTable(name = "events_users", joinColumns = @JoinColumn(name = "staff_id"), inverseJoinColumns = @JoinColumn(name = "event_id"))
   protected Set<Event> events = new HashSet<>();
 
   public static enum Role {
