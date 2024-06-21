@@ -26,8 +26,8 @@ paths:
       tags:
         - CRUD
       parameters: 
-        - $ref: '#/components/parameters/skipParam'
-        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/pageNum'
+        - $ref: '#/components/parameters/pageSize'
       responses: 
         200: 
            description: Ответ со списком мероприятий
@@ -141,55 +141,55 @@ paths:
         404:
           $ref: '#/components/responses/entityNotFoundResponse'
 
-  /trainers:
+  /users:
     get:
-      description: Получить список всех инструкторов
-      operationId: getAllTrainers
+      description: Получить список всех пользователей
+      operationId: getAllUsers
       tags:
         - CRUD
       parameters: 
-        - $ref: '#/components/parameters/skipParam'
-        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/pageNum'
+        - $ref: '#/components/parameters/pageSize'
       responses: 
         200: 
-           description: Ответ со списком инструкторов
+           description: Ответ со списком пользователей
            content: 
              application/json:
               schema: 
                 type: array
                 items:
-                  $ref: '#/components/schemas/trainerDTO'
+                  $ref: '#/components/schemas/userDTO'
                           
     post:
-      description: Метод для создания нового инструктора
-      operationId: createTrainer
+      description: Метод для создания нового пользователя
+      operationId: createUser
       tags:
         - CRUD
       requestBody:
-        description: Новый инструктор(id игнорируется)
+        description: Новый пользователь(id игнорируется)
         required: true
         content: 
           application/json: 
             schema:
-              $ref: '#/components/schemas/trainerDTO' 
+              $ref: '#/components/schemas/userDTO' 
       responses: 
         201:
           description: Сущность успешно сохранена. Возвращает сохраненную сущность с присвоенным ID
           content:
             application/json: 
               schema:
-                $ref: '#/components/schemas/trainerDTO'
+                $ref: '#/components/schemas/userDTO'
         400: 
           $ref: '#/components/responses/validationErrorResponse'
 
-  /trainers/{trainerID}:
+  /users/{userID}:
     put:
       description: Обновление сущности
-      operationId: updateTrainer
+      operationId: updateUser
       tags:
         - CRUD
       parameters: 
-        - name: trainerID
+        - name: userID
           required: true
           in: path
           schema:
@@ -202,15 +202,15 @@ paths:
         content: 
           application/json: 
             schema:
-              $ref: '#/components/schemas/trainerDTO'
+              $ref: '#/components/schemas/userDTO'
 
       responses: 
         202:
-          description: Инструктор успешно сохранен
+          description: пользователь успешно сохранен
           content:
             application/json: 
               schema:
-                $ref: '#/components/schemas/trainerDTO'
+                $ref: '#/components/schemas/userDTO'
         404:
           $ref: '#/components/responses/entityNotFoundResponse'
 
@@ -219,12 +219,12 @@ paths:
 
     get:
       description: Найти сущность по ID
-      operationId: findTrainerById
+      operationId: findUserById
       tags:
         - CRUD
 
       parameters: 
-        - name: trainerID
+        - name: userID
           required: true
           in: path
           schema:
@@ -237,18 +237,18 @@ paths:
           content: 
             application/json: 
               schema:
-                $ref: '#/components/schemas/trainerDTO'
+                $ref: '#/components/schemas/userDTO'
         404:
           $ref: '#/components/responses/entityNotFoundResponse'
 
     delete:
       description: Удалить сущность по ID
-      operationId: deleteTrainerById
+      operationId: deleteUserById
       tags:
         - CRUD
 
       parameters: 
-        - name: trainerID
+        - name: userID
           required: true
           in: path
           schema:
@@ -262,23 +262,23 @@ paths:
         404:
           $ref: '#/components/responses/entityNotFoundResponse'
 
-  /trainers/{trainerID}/events:
+  /users/{userID}/events:
     get:
-      description: Получить список мероприятий инструктора
-      operationId: getAllEventsOfTrainer
+      description: Получить список мероприятий пользователя
+      operationId: getAllEventsOfUser
       tags:
         - Logic
       
       parameters:
-        - name: trainerID
+        - name: userID
           required: true
           in: path
           schema:
             type: integer
             format: int64
 
-        - $ref: '#/components/parameters/skipParam'
-        - $ref: '#/components/parameters/limitParam'
+        - $ref: '#/components/parameters/pageNum'
+        - $ref: '#/components/parameters/pageSize'
 
       responses:
         200:
@@ -294,12 +294,12 @@ paths:
 
 
     post:
-      description: Записать инструктора на мероприятие
-      operationId: inviteTrainerToEvent
+      description: Записать пользовательа на мероприятие
+      operationId: inviteuserToEvent
       tags:
         - Logic
       parameters:
-        - name: trainerID
+        - name: userID
           required: true
           in: path
           schema:
@@ -315,19 +315,19 @@ paths:
 
       responses:
         202:
-          description: Инструктор записан на мероприятие
+          description: пользователь записан на мероприятие
         406:
-          description: Инструктор уже записан на мероприятие
+          description: пользователь уже записан на мероприятие
         404:
           $ref: '#/components/responses/entityNotFoundResponse'
 
     delete:
-      description: Отменить запись инструктора на мероприятие
-      operationId: kickTrainerFromEvent
+      description: Отменить запись пользователя на мероприятие
+      operationId: kickUserFromEvent
       tags:
         - Logic
       parameters:
-        - name: trainerID
+        - name: userID
           required: true
           in: path
           schema:
@@ -345,14 +345,14 @@ paths:
         204:
           description: Запись на мероприятие отменена
         406:
-          description: Инструктор не записан на мероприятие
+          description: пользователь не записан на мероприятие
         404:
           $ref: '#/components/responses/entityNotFoundResponse'
 
-  /events/{eventID}/trainers:   
+  /events/{eventID}/users:   
     get:
-      description: Получить список инструкторов мероприятия
-      operationId: getAllTrainersOfEvent
+      description: Получить список пользовательов мероприятия
+      operationId: getAllUsersOfEvent
       tags:
         - Logic
       
@@ -366,7 +366,7 @@ paths:
 
       responses:
         200:
-          description: Список ID инструкторов с учетом ограничений
+          description: Список ID пользователей с учетом ограничений
           content: 
             application/json: 
               schema: 
@@ -378,8 +378,8 @@ paths:
 
 
     post:
-      description: Записать инструктора на мероприятие
-      operationId: addTrainerToEvent
+      description: Записать пользователя на мероприятие
+      operationId: addUserToEvent
       tags:
         - Logic
       parameters:
@@ -391,7 +391,7 @@ paths:
             format: int64
       requestBody:
         required: true
-        description: ID инструктора
+        description: ID пользователя
         content: 
           application/json: 
             schema:
@@ -399,15 +399,15 @@ paths:
 
       responses:
         202:
-          description: Инструктор записан на мероприятие
+          description: Пользователь записан на мероприятие
         406:
-          description: Инструктор уже записан на мероприятие
+          description: Пользователь уже записан на мероприятие
         404:
           $ref: '#/components/responses/entityNotFoundResponse'
 
     delete:
-      description: Отменить запись инструктора на мероприятие
-      operationId: removeTrainerFromEvent
+      description: Отменить запись пользователя на мероприятие
+      operationId: removeUserFromEvent
       tags:
         - Logic
       parameters:
@@ -419,7 +419,7 @@ paths:
             format: int64
       requestBody:
         required: true
-        description: ID инструктора
+        description: ID пользователя
         content: 
           application/json: 
             schema:
@@ -429,7 +429,7 @@ paths:
         204:
           description: Запись на мероприятие отменена
         406:
-          description: Инструктор не записан на мероприятие
+          description: пользователь не записан на мероприятие
         404:
           $ref: '#/components/responses/entityNotFoundResponse'
 
@@ -466,7 +466,7 @@ components:
           format: int64
           example: 123
 
-    trainerDTO:
+    userDTO:
       type: object
       properties:
         id:
@@ -491,25 +491,25 @@ components:
       properties:
         fieldName:
           type: string
-          example: trainer.username
+          example: user.username
         errorDescripion:
           type: string
           example: To long
 
   parameters:
-    skipParam:
-      name: skip
+    pageNum:
+      name: pageNum
       in: query
-      description: Номер элемента, с которого нужно начать.
+      description: Номер страницы
       required: true
       schema:
         type: integer
         format: int32
         minimum: 0
-    limitParam:
-      name: limit
+    pageSize:
+      name: pageSize
       in: query
-      description: Максимально число элеметов.
+      description: Максимальное число элементов на странице.
       required: true
       schema:
         type: integer

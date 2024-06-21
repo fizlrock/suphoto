@@ -29,11 +29,11 @@ public class EventController implements EventsApi {
   // Base CRUD
 
   @Override
-  public ResponseEntity<List<EventDTO>> getAllEvents(Integer page_size, Integer pageNumber) {
-    var pr = PageRequest.of(pageNumber, page_size);
+  public ResponseEntity<List<EventDTO>> getAllEvents(Integer pageSize, Integer pageNumber) {
+    var pr = PageRequest.of(pageSize, pageNumber);
     var page = eventRepo.findAll(pr);
 
-    var listOfDTO = page.stream()
+    var listOfDTO = page.toList().stream()
         .map(x -> mapper.map(x, EventDTO.class))
         .collect(Collectors.toList());
 
@@ -44,6 +44,7 @@ public class EventController implements EventsApi {
   public ResponseEntity<EventDTO> createEvent(EventDTO eventDTO) {
     var event = mapper.map(eventDTO, Event.class);
 
+    event.setId(null);
     eventRepo.save(event);
 
     var resultEvent = mapper.map(event, EventDTO.class);
@@ -90,17 +91,17 @@ public class EventController implements EventsApi {
   // Logic
 
   @Override
-  public ResponseEntity<Void> addTrainerToEvent(Long eventID, ID ID) {
+  public ResponseEntity<Void> addUserToEvent(Long eventID, ID ID) {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   @Override
-  public ResponseEntity<List<ID>> getAllTrainersOfEvent(Long eventID) {
+  public ResponseEntity<List<ID>> getAllUsersOfEvent(Long eventID) {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
   @Override
-  public ResponseEntity<Void> removeTrainerFromEvent(Long eventID, ID ID) {
+  public ResponseEntity<Void> removeUserFromEvent(Long eventID, ID ID) {
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 
