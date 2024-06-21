@@ -31,7 +31,7 @@ public class Event extends BaseEntity {
   protected LocalDateTime endTime;
 
   @ManyToMany
-  @JoinTable(name = "events_staff", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "staff_id"))
+  @JoinTable(name = "events_users", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "staff_id"))
   protected Set<User> staff = new HashSet<>();
 
 }

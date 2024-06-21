@@ -218,6 +218,7 @@ databaseChangeLog:
 
 - changeSet:
       id: "9"
+      ignore: true
       author: fizlrock 
       comment: Переименование таблицы, с hibernate лень разбираться
       changes:
