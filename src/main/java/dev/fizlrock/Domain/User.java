@@ -14,14 +14,20 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Length;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Builder
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class User extends BaseEntity {
 
-  @Column(name = "username", nullable = false)
+  @Column(name = "username", nullable = false, unique = true)
   @Length(min = 5, max = 30)
   protected String username;
 

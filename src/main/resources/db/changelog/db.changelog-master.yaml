@@ -246,3 +246,14 @@ databaseChangeLog:
               tableName: events_users
               columnName: staff_id
               newDataType: bigint
+- changeSet:
+      id: "11"
+      author: fizlrock 
+      comment: Уникальность username
+
+      changes:
+        - addUniqueConstraint:
+              tableName: users
+              columnNames: username
+              constraintName: users_unique_username
+              validate: true

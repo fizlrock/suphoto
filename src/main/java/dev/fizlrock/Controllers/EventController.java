@@ -29,8 +29,8 @@ public class EventController implements EventsApi {
   // Base CRUD
 
   @Override
-  public ResponseEntity<List<EventDTO>> getAllEvents(Integer pageSize, Integer pageNumber) {
-    var pr = PageRequest.of(pageSize, pageNumber);
+  public ResponseEntity<List<EventDTO>> getAllEvents(Integer pageNumber, Integer pageSize) {
+    var pr = PageRequest.of(pageNumber, pageSize);
     var page = eventRepo.findAll(pr);
 
     var listOfDTO = page.toList().stream()
