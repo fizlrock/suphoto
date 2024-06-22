@@ -37,6 +37,19 @@ public class Event extends BaseEntity {
   @JoinTable(name = "events_users", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "staff_id"))
   protected Set<User> staff = new HashSet<>();
 
-    
+  /**
+   * Нанять сотруника на мероприятие
+   */
+  public void hireAnEmployee(User u) {
+    if (u == null)
+      throw new NullPointerException("Ссылка на пользователя не действительна");
+    if (u.getEvents().contains(this))
+      throw new IllegalStateException("Сотрудник уже записан на мепроприятие");
+
+    getStaff().add(u);
+    u.getEvents().add(this);
+  }
+  private void setStaff() {
+  };
 
 }

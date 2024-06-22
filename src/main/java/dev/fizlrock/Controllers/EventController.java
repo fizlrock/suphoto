@@ -1,5 +1,12 @@
 package dev.fizlrock.Controllers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+import org.openapitools.api.EventsApi;
+import org.openapitools.model.EventDTO;
+import org.openapitools.model.ID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -8,20 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.fizlrock.Domain.Event;
 import dev.fizlrock.Repositories.EventRepository;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.modelmapper.ModelMapper;
-import org.openapitools.api.EventsApi;
-import org.openapitools.model.EventDTO;
-import org.openapitools.model.ID;
+import dev.fizlrock.Repositories.UserRepository;
 
 @RestController("/events")
 public class EventController implements EventsApi {
 
   @Autowired
   EventRepository eventRepo;
+
+  @Autowired
+  UserRepository userRepo;
 
   @Autowired
   ModelMapper mapper;
@@ -92,12 +95,29 @@ public class EventController implements EventsApi {
 
   @Override
   public ResponseEntity<Void> addUserToEvent(Long eventID, ID ID) {
-    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    var event = eventRepo.findById(eventID).get();
+    var user = userRepo.findById(ID.getId()).get();
+    // user.addEvent(event);
+    event.hireAnEmployee(user);
+    eventRepo.save(event);
+
+    return ResponseEntity.ok().build();
   }
 
   @Override
   public ResponseEntity<List<ID>> getAllUsersOfEvent(Long eventID) {
-    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    var event = eventRepo.findById(eventID).get();
+
+    var users = event.getStaff().stream()
+        .map(x -> {
+          var id = new ID();
+          id.setId(x.getId());
+          return id;
+        })
+        .collect(Collectors.toList());
+    return ResponseEntity.ok(users);
   }
 
   @Override

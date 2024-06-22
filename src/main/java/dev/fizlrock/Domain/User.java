@@ -48,10 +48,21 @@ public class User extends BaseEntity {
   @Enumerated(EnumType.STRING)
   protected Role role = Role.None;
 
-  // @Builder.Default
   @ManyToMany
   @JoinTable(name = "events_users", joinColumns = @JoinColumn(name = "staff_id"), inverseJoinColumns = @JoinColumn(name = "event_id"))
   protected Set<Event> events = new HashSet<>();
+
+  private void setEvents() {
+  }
+
+  public void addEvent(Event e) {
+    if (e == null)
+      throw new NullPointerException("Ссылка на мероприятие не действительна");
+    if (e.getStaff().contains(this))
+      throw new IllegalStateException("Сотрудник уже записан на мепроприятие");
+    getEvents().add(e);
+    e.getStaff().add(this);
+  }
 
   public static enum Role {
     None, Client, God, Trainer
