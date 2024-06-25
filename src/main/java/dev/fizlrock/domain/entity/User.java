@@ -62,6 +62,7 @@ public class User extends BaseEntity {
   @Builder.Default
   protected Set<Event> events = new HashSet<>();
 
+  @SuppressWarnings("unused")
   private void setEvents() {
   }
 

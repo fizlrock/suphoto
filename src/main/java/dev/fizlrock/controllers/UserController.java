@@ -31,8 +31,8 @@ public class UserController implements UsersApi {
   @Override
   public ResponseEntity<List<UserDTO>> getAllUsers(Integer pageSize, Integer pageNum) {
 
-    var pr = PageRequest.of(pageSize, pageNum);
-    var users = userService.findAllUsers(pr);
+    PageRequest pr = PageRequest.of(pageSize, pageNum);
+    List<UserDTO> users = userService.findAllUsers(pr);
     return ResponseEntity.ok(users);
   }
 

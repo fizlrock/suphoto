@@ -1,6 +1,7 @@
 package dev.fizlrock.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -26,9 +27,9 @@ public class EventCrudService {
   ModelMapper mapper;
 
   public EventDTO saveEvent(EventDTO eventDTO) {
-    var event = mapper.map(eventDTO, Event.class);
-    var savedEvent = eventRepo.save(event);
-    var savedEventDTO = mapper.map(savedEvent, EventDTO.class);
+    Event event = mapper.map(eventDTO, Event.class);
+    Event savedEvent = eventRepo.save(event);
+    EventDTO savedEventDTO = mapper.map(savedEvent, EventDTO.class);
     return savedEventDTO;
   }
 
@@ -38,7 +39,7 @@ public class EventCrudService {
   }
 
   public EventDTO findEventById(Long id) {
-    var event = eventRepo.findById(id);
+    Optional<Event> event = eventRepo.findById(id);
     if (event.isPresent())
       return mapper.map(event, EventDTO.class);
     else
@@ -46,7 +47,7 @@ public class EventCrudService {
   }
 
   public void deleteEventById(Long id) {
-    var event = eventRepo.findById(id);
+    Optional<Event> event = eventRepo.findById(id);
     if (event.isPresent())
       eventRepo.deleteById(id);
     else

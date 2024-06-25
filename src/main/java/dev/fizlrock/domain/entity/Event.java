@@ -46,6 +46,7 @@ public class Event extends BaseEntity {
   @EqualsAndHashCode.Exclude
   protected Set<User> staff = new HashSet<>();
 
+  @SuppressWarnings("unused")
   private void setStaff() {
   };
 

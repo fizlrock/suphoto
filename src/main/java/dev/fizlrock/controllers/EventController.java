@@ -33,7 +33,7 @@ public class EventController implements EventsApi {
   @Override
   public ResponseEntity<List<EventDTO>> getAllEvents(Integer pageNumber,
       Integer pageSize) {
-    var pr = PageRequest.of(pageNumber, pageSize);
+    PageRequest pr = PageRequest.of(pageNumber, pageSize);
     return ResponseEntity.ok(service.findAllEvents(pr));
   }
 
@@ -74,9 +74,9 @@ public class EventController implements EventsApi {
   @Override
   public ResponseEntity<List<ID>> getAllUsersOfEvent(Long eventID) {
 
-    var ids = trainerService.getAllTranersOfEvent(eventID).stream()
+    List<ID> ids = trainerService.getAllTranersOfEvent(eventID).stream()
         .map(x -> {
-          var id = new ID();
+          ID id = new ID();
           id.setId(x);
           return id;
         })

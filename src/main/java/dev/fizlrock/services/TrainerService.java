@@ -16,6 +16,14 @@ import dev.fizlrock.repositories.EventRepository;
 import dev.fizlrock.repositories.UserRepository;
 
 /**
+ * Сервис для работы с ведущими мероприятия. <br>
+ * Функционал:
+ * <ol>
+ * <li>Записать инструктора на мероприятие
+ * <li>Отменить записть инструктора
+ * <li>Получить список мероприятий
+ * <li>Получить список инструкторов
+ * </ol>
  * TrainerService
  */
 @Service
@@ -46,20 +54,20 @@ public class TrainerService {
    */
   public void addEventToTrainer(Long trainerId, Long eventId) {
 
-    var event = eventRepo
+    Event event = eventRepo
         .findById(eventId)
         .orElseThrow(() -> new EventNotFoundException(eventId));
 
-    var user = userRepo
+    User user = userRepo
         .findById(trainerId)
         .orElseThrow(() -> new UserNotFoundException(trainerId));
 
     if (user.getRole() != Role.Trainer)
-      throw new RuntimeException();
+      throw new IllegalStateException("Пользователь не является инструктором");
     // Тут обработать ошибку
 
     if (event.getStaff().contains(user))
-      throw new RuntimeException();
+      throw new IllegalStateException("Инструктор уже записан на мероприятие");
 
     user.getEvents().add(event);
     userRepo.save(user);
@@ -72,11 +80,11 @@ public class TrainerService {
    * @return Список индентификаторов инструкторов
    */
   public List<Long> getAllTranersOfEvent(Long eventID) {
-    var event = eventRepo
+    Event event = eventRepo
         .findById(eventID)
         .orElseThrow(() -> new EventNotFoundException(eventID));
 
-    var idsOfStaff = event.getStaff().stream()
+    List<Long> idsOfStaff = event.getStaff().stream()
         .map(User::getId)
         .collect(Collectors.toList());
 
@@ -91,11 +99,11 @@ public class TrainerService {
    */
   public List<Long> getAllEventsOfTrainer(Long trainerID) {
 
-    var user = userRepo
+    User user = userRepo
         .findById(trainerID)
         .orElseThrow(() -> new UserNotFoundException(trainerID));
 
-    var idsOfEvents = user.getEvents().stream()
+    List<Long> idsOfEvents = user.getEvents().stream()
         .map(Event::getId)
         .collect(Collectors.toList());
 
