@@ -1,4 +1,4 @@
-package dev.fizlrock.Controllers;
+package dev.fizlrock.controllers;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,18 +13,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.fizlrock.Domain.Event;
-import dev.fizlrock.Repositories.EventRepository;
-import dev.fizlrock.Repositories.UserRepository;
+import dev.fizlrock.domain.entity.Event;
+import dev.fizlrock.repositories.EventRepository;
+import dev.fizlrock.repositories.UserRepository;
+import dev.fizlrock.services.EventCrudService;
 
 @RestController("/events")
 public class EventController implements EventsApi {
 
   @Autowired
-  EventRepository eventRepo;
-
-  @Autowired
-  UserRepository userRepo;
+  EventCrudService service;
 
   @Autowired
   ModelMapper mapper;
@@ -32,97 +30,69 @@ public class EventController implements EventsApi {
   // Base CRUD
 
   @Override
-  public ResponseEntity<List<EventDTO>> getAllEvents(Integer pageNumber, Integer pageSize) {
+  public ResponseEntity<List<EventDTO>> getAllEvents(Integer pageNumber,
+      Integer pageSize) {
     var pr = PageRequest.of(pageNumber, pageSize);
-    var page = eventRepo.findAll(pr);
-
-    var listOfDTO = page.toList().stream()
-        .map(x -> mapper.map(x, EventDTO.class))
-        .collect(Collectors.toList());
-
-    return ResponseEntity.ok(listOfDTO);
+    return ResponseEntity.ok(service.findAllEvents(pr));
   }
 
   @Override
   public ResponseEntity<EventDTO> createEvent(EventDTO eventDTO) {
-    var event = mapper.map(eventDTO, Event.class);
-
-    event.setId(null);
-    eventRepo.save(event);
-
-    var resultEvent = mapper.map(event, EventDTO.class);
-    return ResponseEntity.status(HttpStatus.CREATED).body(resultEvent);
+    return ResponseEntity
+        .status(HttpStatus.CREATED)
+        .body(service.saveEvent(eventDTO));
   }
 
   @Override
   public ResponseEntity<Void> deleteEventById(Long eventID) {
-
-    var event = eventRepo.findById(eventID);
-    if (event.isEmpty())
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    else {
-      eventRepo.delete(event.get());
-      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+    service.findEventById(eventID);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
   @Override
   public ResponseEntity<EventDTO> findEventById(Long eventID) {
-    var event = eventRepo.findById(eventID);
-    if (event.isEmpty())
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    else {
-      var dto = mapper.map(event, EventDTO.class);
-      return ResponseEntity.ok(dto);
-    }
+    return ResponseEntity.ok(service.findEventById(eventID));
   }
 
   @Override
   public ResponseEntity<EventDTO> updateEvent(Long eventID, EventDTO eventDTO) {
-
-    var eventInDB = eventRepo.findById(eventID);
-    if (eventInDB.isEmpty())
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-    var updatedEvent = mapper.map(eventDTO, Event.class);
-    updatedEvent.setId(eventID);
-    eventRepo.save(updatedEvent);
-
-    return ResponseEntity.ok(mapper.map(updatedEvent, EventDTO.class));
+    eventDTO.setId(eventID);
+    return ResponseEntity.ok(
+        service.saveEvent(eventDTO));
   }
 
-  // Logic
+  // // Logic
 
-  @Override
-  public ResponseEntity<Void> addUserToEvent(Long eventID, ID ID) {
+  // @Override
+  // public ResponseEntity<Void> addUserToEvent(Long eventID, ID ID) {
 
-    var event = eventRepo.findById(eventID).get();
-    var user = userRepo.findById(ID.getId()).get();
-    // user.addEvent(event);
-    event.hireAnEmployee(user);
-    eventRepo.save(event);
+  // var event = eventRepo.findById(eventID).get();
+  // var user = userRepo.findById(ID.getId()).get();
+  // // user.addEvent(event);
+  // event.hireAnEmployee(user);
+  // eventRepo.save(event);
 
-    return ResponseEntity.ok().build();
-  }
+  // return ResponseEntity.ok().build();
+  // }
 
-  @Override
-  public ResponseEntity<List<ID>> getAllUsersOfEvent(Long eventID) {
+  // @Override
+  // public ResponseEntity<List<ID>> getAllUsersOfEvent(Long eventID) {
 
-    var event = eventRepo.findById(eventID).get();
+  // var event = eventRepo.findById(eventID).get();
 
-    var users = event.getStaff().stream()
-        .map(x -> {
-          var id = new ID();
-          id.setId(x.getId());
-          return id;
-        })
-        .collect(Collectors.toList());
-    return ResponseEntity.ok(users);
-  }
+  // var users = event.getStaff().stream()
+  // .map(x -> {
+  // var id = new ID();
+  // id.setId(x.getId());
+  // return id;
+  // })
+  // .collect(Collectors.toList());
+  // return ResponseEntity.ok(users);
+  // }
 
-  @Override
-  public ResponseEntity<Void> removeUserFromEvent(Long eventID, ID ID) {
-    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-  }
+  // @Override
+  // public ResponseEntity<Void> removeUserFromEvent(Long eventID, ID ID) {
+  // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+  // }
 
 }

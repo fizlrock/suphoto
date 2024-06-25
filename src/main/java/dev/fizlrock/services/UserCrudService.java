@@ -1,13 +1,18 @@
 package dev.fizlrock.services;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.openapitools.model.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import dev.fizlrock.domain.User;
+import dev.fizlrock.domain.entity.User;
+import dev.fizlrock.domain.exception.UserNotFoundException;
 import dev.fizlrock.repositories.UserRepository;
-import javassist.NotFoundException;
 
 /**
  * 
@@ -22,7 +27,7 @@ import javassist.NotFoundException;
  * </ol>
  */
 @Service
-public class SUPhoto {
+public class UserCrudService {
 
   @Autowired
   private UserRepository userRepo;
@@ -40,17 +45,35 @@ public class SUPhoto {
 
   public UserDTO createUser(UserDTO rawUser) {
     rawUser.setId(null);
-
     return saveUser(rawUser);
   }
 
-  public UserDTO findUserById(Long id) throws NotFoundException {
-    var optionalUser = userRepo.findById(id);
+  public UserDTO findUserById(Long id) throws UserNotFoundException {
+    Optional<User> user = userRepo.findById(id);
 
-    if (optionalUser.isPresent())
-      return mapper.map(optionalUser, UserDTO.class);
+    if (user.isPresent())
+      return mapper.map(user, UserDTO.class);
     else
-      throw new NotFoundException("Пользователь не найден");
+      throw new UserNotFoundException(id);
+  }
+
+  public void deleteUserById(Long id) throws UserNotFoundException {
+
+    Optional<User> user = userRepo.findById(id);
+
+    if (user.isPresent())
+      userRepo.deleteById(id);
+    else
+      throw new UserNotFoundException(id);
+  }
+
+  public List<UserDTO> findAllUsers(PageRequest pageRequest) {
+
+    List<UserDTO> users = userRepo.findAll(pageRequest).stream()
+        .map(x -> mapper.map(x, UserDTO.class))
+        .collect(Collectors.toList());
+
+    return users;
   }
 
 }

@@ -3,8 +3,8 @@ package dev.fizlrock.domain.exception;
 /**
  * UserNotFoundException
  */
-public class UserNotFoundException extends RuntimeException {
-  public UserNotFoundException(Number id) {
+public class EventNotFoundException extends RuntimeException {
+  public EventNotFoundException(Number id) {
     super(String.format("Пользователь с id %d не найден", id));
   }
 }

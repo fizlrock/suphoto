@@ -1,7 +1,6 @@
 package dev.fizlrock.controllers;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.openapitools.api.UsersApi;
@@ -13,8 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.fizlrock.services.SUPhoto;
-
+import dev.fizlrock.services.UserCrudService;
 
 /**
  * UserController
@@ -26,52 +24,41 @@ public class UserController implements UsersApi {
   ModelMapper mapper;
 
   @Autowired
-  SUPhoto service;
+  UserCrudService userService;
 
   // CRUD
 
-  // @Override
-  // public ResponseEntity<List<UserDTO>> getAllUsers(Integer pageSize, Integer
-  // pageNum) {
+  @Override
+  public ResponseEntity<List<UserDTO>> getAllUsers(Integer pageSize, Integer pageNum) {
 
-  // var pr = PageRequest.of(pageSize, pageNum);
-  // var page = userRepo.findAll(pr);
-  // var list_of_users = page.stream()
-  // .map(x -> mapper.map(x, UserDTO.class))
-  // .collect(Collectors.toList());
-
-  // return ResponseEntity.ok(list_of_users);
-  // }
+    var pr = PageRequest.of(pageSize, pageNum);
+    var users = userService.findAllUsers(pr);
+    return ResponseEntity.ok(users);
+  }
 
   public ResponseEntity<UserDTO> createUser(UserDTO userDTO) {
-    UserDTO saved_user = service.createUser(userDTO);
+    UserDTO saved_user = userService.createUser(userDTO);
     return ResponseEntity.status(HttpStatus.CREATED).body(saved_user);
   }
 
-  // @Override
-  // public ResponseEntity<Void> deleteUserById(Long userID) {
-  // var user = userRepo.findById(userID);
-
-  // if (user.isEmpty())
-  // return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-  // else {
-  // userRepo.deleteById(userID);
-  // return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-  // }
-
-  // }
+  @Override
+  public ResponseEntity<Void> deleteUserById(Long userID) {
+    userService.deleteUserById(userID);
+    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+  }
 
   @Override
   public ResponseEntity<UserDTO> findUserById(Long userID) {
-    return ResponseEntity.ok(service.findUserById(userID));
+    return ResponseEntity.ok(userService.findUserById(userID));
 
   }
 
   @Override
   public ResponseEntity<UserDTO> updateUser(Long userID, UserDTO userDTO) {
-
     userDTO.setId(userID);
-    return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.saveUser);
+    return ResponseEntity
+        .status(HttpStatus.ACCEPTED)
+        .body(userService.saveUser(userDTO));
   }
 
   // Logic
