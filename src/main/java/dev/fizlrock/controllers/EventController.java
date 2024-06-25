@@ -13,16 +13,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.fizlrock.domain.entity.Event;
-import dev.fizlrock.repositories.EventRepository;
-import dev.fizlrock.repositories.UserRepository;
 import dev.fizlrock.services.EventCrudService;
+import dev.fizlrock.services.TrainerService;
 
 @RestController("/events")
 public class EventController implements EventsApi {
 
   @Autowired
   EventCrudService service;
+
+  @Autowired
+  TrainerService trainerService;
 
   @Autowired
   ModelMapper mapper;
@@ -63,32 +64,26 @@ public class EventController implements EventsApi {
 
   // // Logic
 
-  // @Override
-  // public ResponseEntity<Void> addUserToEvent(Long eventID, ID ID) {
+  @Override
+  public ResponseEntity<Void> addUserToEvent(Long eventID, ID userID) {
+    trainerService.addEventToTrainer(userID.getId(), eventID);
 
-  // var event = eventRepo.findById(eventID).get();
-  // var user = userRepo.findById(ID.getId()).get();
-  // // user.addEvent(event);
-  // event.hireAnEmployee(user);
-  // eventRepo.save(event);
+    return ResponseEntity.ok(null);
+  }
 
-  // return ResponseEntity.ok().build();
-  // }
+  @Override
+  public ResponseEntity<List<ID>> getAllUsersOfEvent(Long eventID) {
 
-  // @Override
-  // public ResponseEntity<List<ID>> getAllUsersOfEvent(Long eventID) {
+    var ids = trainerService.getAllTranersOfEvent(eventID).stream()
+        .map(x -> {
+          var id = new ID();
+          id.setId(x);
+          return id;
+        })
+        .collect(Collectors.toList());
 
-  // var event = eventRepo.findById(eventID).get();
-
-  // var users = event.getStaff().stream()
-  // .map(x -> {
-  // var id = new ID();
-  // id.setId(x.getId());
-  // return id;
-  // })
-  // .collect(Collectors.toList());
-  // return ResponseEntity.ok(users);
-  // }
+    return ResponseEntity.ok(ids);
+  }
 
   // @Override
   // public ResponseEntity<Void> removeUserFromEvent(Long eventID, ID ID) {
