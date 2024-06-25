@@ -1,4 +1,4 @@
-package dev.fizlrock.Configuration;
+package dev.fizlrock.configuration;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
@@ -7,8 +7,9 @@ import org.openapitools.model.UserDTO;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import dev.fizlrock.Domain.Event;
-import dev.fizlrock.Domain.User;
+import dev.fizlrock.domain.entity.Event;
+import dev.fizlrock.domain.entity.User;
+
 
 /**
  * MapperConfig

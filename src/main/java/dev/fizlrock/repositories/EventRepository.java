@@ -1,8 +1,9 @@
-package dev.fizlrock.Repositories;
+package dev.fizlrock.repositories;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import dev.fizlrock.Domain.Event;
+import dev.fizlrock.domain.entity.Event;
+
 
 /**
  * EventRepository

@@ -1,4 +1,4 @@
-package dev.fizlrock.Domain;
+package dev.fizlrock.domain.entity;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;

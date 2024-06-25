@@ -1,4 +1,4 @@
-package dev.fizlrock.Domain;
+package dev.fizlrock.domain.entity;
 
 import java.util.HashSet;
 import java.util.Set;

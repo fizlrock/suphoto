@@ -1,12 +1,10 @@
-package dev.fizlrock.Repositories;
+package dev.fizlrock.repositories;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import dev.fizlrock.Domain.User;
+import dev.fizlrock.domain.entity.User;
 
-/**
- * UserRepository
- */
+
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
 }

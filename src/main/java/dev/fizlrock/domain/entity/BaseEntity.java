@@ -1,4 +1,4 @@
-package dev.fizlrock.Domain;
+package dev.fizlrock.domain.entity;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
