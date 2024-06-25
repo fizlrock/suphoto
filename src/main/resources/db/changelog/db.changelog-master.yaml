@@ -257,3 +257,23 @@ databaseChangeLog:
               columnNames: username
               constraintName: users_unique_username
               validate: true
+- changeSet:
+      id: "12"
+      author: fizlrock 
+      comment: hibernate умеет удивлять
+
+      changes:
+          - renameTable:
+              oldTableName: events_users
+              newTableName: users_events
+
+- changeSet:
+      id: "13"
+      author: fizlrock 
+      comment: hibernate умеет удивлять
+
+      changes:
+          - renameColumn:
+              tableName: users_events
+              oldColumnName: event_id
+              newColumnName: events_id

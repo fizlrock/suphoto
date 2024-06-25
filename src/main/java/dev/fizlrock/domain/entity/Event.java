@@ -4,21 +4,29 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Event
  */
 @Table(name = "events")
 @Entity
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Event extends BaseEntity {
 
   @Column(name = "title", nullable = false)
@@ -33,22 +41,11 @@ public class Event extends BaseEntity {
   @Column(name = "end_time", nullable = false)
   protected LocalDateTime endTime;
 
-  @ManyToMany
-  @JoinTable(name = "events_users", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "staff_id"))
+  @ManyToMany(mappedBy = "events", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   protected Set<User> staff = new HashSet<>();
 
-  /**
-   * Нанять сотруника на мероприятие
-   */
-  public void hireAnEmployee(User u) {
-    if (u == null)
-      throw new NullPointerException("Ссылка на пользователя не действительна");
-    if (u.getEvents().contains(this))
-      throw new IllegalStateException("Сотрудник уже записан на мепроприятие");
-
-    getStaff().add(u);
-    u.getEvents().add(this);
-  }
   private void setStaff() {
   };
 

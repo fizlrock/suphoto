@@ -3,12 +3,12 @@ package dev.fizlrock.domain.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -16,16 +16,24 @@ import org.hibernate.validator.constraints.Length;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Builder
 @Entity
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 public class User extends BaseEntity {
+
+  public static enum Role {
+    None, Client, God, Trainer
+  }
 
   @Column(name = "username", nullable = false, unique = true)
   @Length(min = 5, max = 30)
@@ -48,24 +56,13 @@ public class User extends BaseEntity {
   @Enumerated(EnumType.STRING)
   protected Role role = Role.None;
 
-  @ManyToMany
-  @JoinTable(name = "events_users", joinColumns = @JoinColumn(name = "staff_id"), inverseJoinColumns = @JoinColumn(name = "event_id"))
+  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  @Builder.Default
   protected Set<Event> events = new HashSet<>();
 
   private void setEvents() {
-  }
-
-  public void addEvent(Event e) {
-    if (e == null)
-      throw new NullPointerException("Ссылка на мероприятие не действительна");
-    if (e.getStaff().contains(this))
-      throw new IllegalStateException("Сотрудник уже записан на мепроприятие");
-    getEvents().add(e);
-    e.getStaff().add(this);
-  }
-
-  public static enum Role {
-    None, Client, God, Trainer
   }
 
 }

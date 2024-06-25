@@ -61,8 +61,8 @@ public class TrainerService {
     if (event.getStaff().contains(user))
       throw new RuntimeException();
 
-    event.getStaff().add(user);
     user.getEvents().add(event);
+    userRepo.save(user);
 
   }
 
