@@ -98,10 +98,11 @@ public class TrainerService {
         .findById(trainerId)
         .orElseThrow(() -> new UserNotFoundException(trainerId));
 
-    if (event.getStaff().contains(user))
+    if (!event.getStaff().contains(user))
       throw new IllegalStateException("Инструктор не записан на мероприятие");
 
-    user.getEvents().remove(user);
+    user.getEvents().remove(event);
+    userRepo.save(user);
 
   }
 

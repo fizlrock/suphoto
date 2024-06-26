@@ -80,7 +80,8 @@ public class UserController implements UsersApi {
   }
 
   @Override
-  public ResponseEntity<Void> kickUserFromEvent(Long userID, ID ID) {
+  public ResponseEntity<Void> kickUserFromEvent(Long userID, ID eventID) {
+    trainerService.kickTrainerFromEvent(userID, eventID.getId());
     return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
   }
 

@@ -41,7 +41,7 @@ public class Event extends BaseEntity {
   @Column(name = "end_time", nullable = false)
   protected LocalDateTime endTime;
 
-  @ManyToMany(mappedBy = "events", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @ManyToMany(mappedBy = "events", fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   protected Set<User> staff = new HashSet<>();

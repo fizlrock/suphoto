@@ -85,9 +85,10 @@ public class EventController implements EventsApi {
     return ResponseEntity.ok(ids);
   }
 
-  // @Override
-  // public ResponseEntity<Void> removeUserFromEvent(Long eventID, ID ID) {
-  // return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-  // }
+  @Override
+  public ResponseEntity<Void> removeUserFromEvent(Long eventID, ID trainerID) {
+    trainerService.kickTrainerFromEvent(trainerID.getId(), eventID);
+    return ResponseEntity.ok(null);
+  }
 
 }

@@ -56,7 +56,7 @@ public class User extends BaseEntity {
   @Enumerated(EnumType.STRING)
   protected Role role = Role.None;
 
-  @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   @Builder.Default
