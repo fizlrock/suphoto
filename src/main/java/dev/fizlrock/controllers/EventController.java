@@ -3,11 +3,9 @@ package dev.fizlrock.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
 import org.openapitools.api.EventsApi;
 import org.openapitools.model.EventDTO;
 import org.openapitools.model.ID;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +17,13 @@ import dev.fizlrock.services.TrainerService;
 @RestController("/events")
 public class EventController implements EventsApi {
 
-  @Autowired
-  EventCrudService service;
+  public EventController(EventCrudService eventService, TrainerService trainerService) {
+    this.eventService = eventService;
+    this.trainerService = trainerService;
+  }
 
-  @Autowired
+  EventCrudService eventService;
   TrainerService trainerService;
-
-  @Autowired
-  ModelMapper mapper;
 
   // Base CRUD
 
@@ -34,32 +31,32 @@ public class EventController implements EventsApi {
   public ResponseEntity<List<EventDTO>> getAllEvents(Integer pageNumber,
       Integer pageSize) {
     PageRequest pr = PageRequest.of(pageNumber, pageSize);
-    return ResponseEntity.ok(service.findAllEvents(pr));
+    return ResponseEntity.ok(eventService.findAllEvents(pr));
   }
 
   @Override
   public ResponseEntity<EventDTO> createEvent(EventDTO eventDTO) {
     return ResponseEntity
         .status(HttpStatus.CREATED)
-        .body(service.saveEvent(eventDTO));
+        .body(eventService.saveEvent(eventDTO));
   }
 
   @Override
   public ResponseEntity<Void> deleteEventById(Long eventID) {
-    service.findEventById(eventID);
+    eventService.findEventById(eventID);
     return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
   @Override
   public ResponseEntity<EventDTO> findEventById(Long eventID) {
-    return ResponseEntity.ok(service.findEventById(eventID));
+    return ResponseEntity.ok(eventService.findEventById(eventID));
   }
 
   @Override
   public ResponseEntity<EventDTO> updateEvent(Long eventID, EventDTO eventDTO) {
     eventDTO.setId(eventID);
     return ResponseEntity.ok(
-        service.saveEvent(eventDTO));
+        eventService.saveEvent(eventDTO));
   }
 
   // // Logic

@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.openapitools.model.EventDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +19,12 @@ import dev.fizlrock.repositories.EventRepository;
 @Service
 public class EventCrudService {
 
-  @Autowired
-  EventRepository eventRepo;
+  public EventCrudService(EventRepository eventRepo, ModelMapper mapper) {
+    this.eventRepo = eventRepo;
+    this.mapper = mapper;
+  }
 
-  @Autowired
+  EventRepository eventRepo;
   ModelMapper mapper;
 
   public EventDTO saveEvent(EventDTO eventDTO) {

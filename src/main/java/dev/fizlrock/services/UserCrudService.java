@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.openapitools.model.UserDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +16,12 @@ import dev.fizlrock.repositories.UserRepository;
 @Service
 public class UserCrudService {
 
-  @Autowired
-  private UserRepository userRepo;
+  public UserCrudService(UserRepository userRepo, ModelMapper mapper) {
+    this.userRepo = userRepo;
+    this.mapper = mapper;
+  }
 
-  @Autowired
+  private UserRepository userRepo;
   private ModelMapper mapper;
 
   public UserDTO saveUser(UserDTO rawUser) {

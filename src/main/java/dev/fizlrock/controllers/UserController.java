@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import org.openapitools.api.UsersApi;
 import org.openapitools.model.ID;
 import org.openapitools.model.UserDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +17,12 @@ import dev.fizlrock.services.UserCrudService;
 @RestController("/users")
 public class UserController implements UsersApi {
 
-  @Autowired
-  UserCrudService userService;
+  public UserController(UserCrudService userService, TrainerService tranerService) {
+    this.userService = userService;
+    this.trainerService = tranerService;
+  }
 
-  @Autowired
+  UserCrudService userService;
   TrainerService trainerService;
 
   // CRUD

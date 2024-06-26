@@ -3,8 +3,6 @@ package dev.fizlrock.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev.fizlrock.domain.entity.Event;
@@ -29,14 +27,13 @@ import dev.fizlrock.repositories.UserRepository;
 @Service
 public class TrainerService {
 
-  @Autowired
-  UserRepository userRepo;
+  public TrainerService(UserRepository userRepo, EventRepository eventRepo) {
+    this.eventRepo = eventRepo;
+    this.userRepo = userRepo;
+  }
 
-  @Autowired
-  EventRepository eventRepo;
-
-  @Autowired
-  ModelMapper mapper;
+  private UserRepository userRepo;
+  private EventRepository eventRepo;
 
   /**
    * Добавляет пользователя в список ведущих мероприятия
@@ -85,7 +82,6 @@ public class TrainerService {
    * @param trainerId
    * @param eventId
    */
-  @SuppressWarnings("unlikely-arg-type")
   public void kickTrainerFromEvent(Long trainerId, Long eventId) {
 
     // С этим копипастом нужно что-то сделать...
