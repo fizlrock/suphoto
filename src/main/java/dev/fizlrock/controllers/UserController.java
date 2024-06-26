@@ -61,7 +61,7 @@ public class UserController implements UsersApi {
   // Logic
 
   @Override
-  public ResponseEntity<List<ID>> getAllEventsOfUser(Long userID, Integer pageNum, Integer pageSize) {
+  public ResponseEntity<List<ID>> getAllEventsOfUser(Long userID) {
 
     List<ID> ids = trainerService.getAllEventsOfTrainer(userID).stream()
         .map(x -> {
@@ -75,7 +75,7 @@ public class UserController implements UsersApi {
   }
 
   @Override
-  public ResponseEntity<Void> inviteuserToEvent(Long userID, ID eventID) {
+  public ResponseEntity<Void> inviteUserToEvent(Long userID, ID eventID) {
     trainerService.addEventToTrainer(userID, eventID.getId());
     return ResponseEntity.ok(null);
   }

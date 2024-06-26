@@ -277,8 +277,6 @@ paths:
             type: integer
             format: int64
 
-        - $ref: '#/components/parameters/pageNum'
-        - $ref: '#/components/parameters/pageSize'
 
       responses:
         200:
@@ -295,7 +293,7 @@ paths:
 
     post:
       description: Записать пользовательа на мероприятие
-      operationId: inviteuserToEvent
+      operationId: inviteUserToEvent
       tags:
         - Logic
       parameters:
