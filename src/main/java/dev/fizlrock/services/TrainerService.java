@@ -64,13 +64,44 @@ public class TrainerService {
 
     if (user.getRole() != Role.Trainer)
       throw new IllegalStateException("Пользователь не является инструктором");
-    // Тут обработать ошибку
 
     if (event.getStaff().contains(user))
       throw new IllegalStateException("Инструктор уже записан на мероприятие");
 
     user.getEvents().add(event);
     userRepo.save(user);
+  }
+
+  /**
+   * Исключает инструктора из списка ведущих <br>
+   * 
+   * Возможные ошибки:
+   * <ol>
+   * <li>Мероприятие не найдено
+   * <li>Пользователь не найден
+   * <li>Инструктор не записан на мероприятие
+   * </ol>
+   * 
+   * @param trainerId
+   * @param eventId
+   */
+  @SuppressWarnings("unlikely-arg-type")
+  public void kickTrainerFromEvent(Long trainerId, Long eventId) {
+
+    // С этим копипастом нужно что-то сделать...
+
+    Event event = eventRepo
+        .findById(eventId)
+        .orElseThrow(() -> new EventNotFoundException(eventId));
+
+    User user = userRepo
+        .findById(trainerId)
+        .orElseThrow(() -> new UserNotFoundException(trainerId));
+
+    if (event.getStaff().contains(user))
+      throw new IllegalStateException("Инструктор не записан на мероприятие");
+
+    user.getEvents().remove(user);
 
   }
 
