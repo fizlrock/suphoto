@@ -1,5 +1,7 @@
 package dev.fizlrock.services;
 
+import java.awt.desktop.UserSessionEvent;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,9 +23,6 @@ import dev.fizlrock.repositories.UserRepository;
  * <li>Создать пользователя
  * <li>Изменить пользователя по id
  * <li>Получить всех пользователей с пагинацией
- * <li>Создать мероприятие
- * <li>Изменить мероприятие по id
- * <li>Получить список мероприятий по id
  * </ol>
  */
 @Service
@@ -58,13 +57,9 @@ public class UserCrudService {
   }
 
   public void deleteUserById(Long id) throws UserNotFoundException {
-
-    Optional<User> user = userRepo.findById(id);
-
-    if (user.isPresent())
-      userRepo.deleteById(id);
-    else
+    if (!userRepo.existsById(id))
       throw new UserNotFoundException(id);
+    userRepo.deleteById(id);
   }
 
   public List<UserDTO> findAllUsers(PageRequest pageRequest) {

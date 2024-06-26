@@ -17,7 +17,7 @@ import dev.fizlrock.repositories.EventRepository;
 /**
  * EventCrudService
  */
- @Service
+@Service
 public class EventCrudService {
 
   @Autowired
@@ -47,11 +47,9 @@ public class EventCrudService {
   }
 
   public void deleteEventById(Long id) {
-    Optional<Event> event = eventRepo.findById(id);
-    if (event.isPresent())
-      eventRepo.deleteById(id);
-    else
+    if (!eventRepo.existsById(id))
       throw new EventNotFoundException(id);
+    eventRepo.deleteById(id);
   }
 
   public List<EventDTO> findAllEvents(PageRequest pageRequest) {
