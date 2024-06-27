@@ -3,15 +3,12 @@ package dev.fizlrock.controllers;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.validation.ConstraintViolationException;
-
 import org.openapitools.api.EventsApi;
 import org.openapitools.model.EventDTO;
 import org.openapitools.model.ID;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.fizlrock.services.EventCrudService;
@@ -20,11 +17,6 @@ import dev.fizlrock.services.TrainerService;
 @RestController("/events")
 public class EventController implements EventsApi {
 
-  @ExceptionHandler(ConstraintViolationException.class)
-  ResponseEntity<String> validationErrorHandler() {
-
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ошибка валидации");
-  }
 
   public EventController(EventCrudService eventService, TrainerService trainerService) {
     this.eventService = eventService;
