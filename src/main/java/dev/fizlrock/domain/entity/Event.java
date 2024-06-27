@@ -11,6 +11,8 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.Length;
+
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -30,9 +32,11 @@ import lombok.ToString;
 public class Event extends BaseEntity {
 
   @Column(name = "title", nullable = false)
+  @Length(min = 5, max = 30)
   protected String title;
 
   @Column(name = "location", nullable = false)
+  @Length(min = 5, max = 30)
   protected String location;
 
   @Column(name = "start_time", nullable = false)
