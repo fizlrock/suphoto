@@ -13,7 +13,6 @@ RUN /usr/lib/jvm/java-11-openjdk/bin/jlink \
     --add-modules \
 java.base,java.logging,java.sql,java.naming,java.management,java.instrument,java.desktop,java.security.jgss,jdk.unsupported \
     --compress 2 --strip-debug --no-header-files --no-man-pages \
-    --release-info="add:IMPLEMENTOR=radistao:IMPLEMENTOR_VERSION=radistao_JRE" \
     --output "$JAVA_MINIMAL"
 
 
@@ -24,5 +23,5 @@ ENV JAVA_HOME=/opt/java-minimal
 ENV PATH="$PATH:$JAVA_HOME/bin"
 COPY --from=packager "$JAVA_HOME" "$JAVA_HOME"
 COPY --from=builder /src/target/*.jar app.jar
-EXPOSE 8080
+EXPOSE 8181
 ENTRYPOINT ["java","-jar","/app.jar"]
