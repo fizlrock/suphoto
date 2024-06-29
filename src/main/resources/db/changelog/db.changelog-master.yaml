@@ -353,3 +353,17 @@ databaseChangeLog:
               tableName: users_events
               oldColumnName: event_id
               newColumnName: events_id
+- changeSet:
+      id: "14"
+      author: fizlrock 
+      comment: create column for password in users table
+
+      changes:
+          - addColumn:
+              tableName: users
+              columns:
+                  - column:
+                      name: password
+                      type: clob
+                      constraints:
+                        nullable: false
