@@ -39,6 +39,9 @@ public class User extends BaseEntity {
   @Length(min = 5, max = 30)
   protected String username;
 
+  @Column(name = "password", nullable = false)
+  protected String password;
+
   @Column(name = "firstName", nullable = false)
   @Length(min = 5, max = 30)
   protected String firstName;

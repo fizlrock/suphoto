@@ -17,7 +17,6 @@ import dev.fizlrock.services.TrainerService;
 @RestController("/events")
 public class EventController implements EventsApi {
 
-
   public EventController(EventCrudService eventService, TrainerService trainerService) {
     this.eventService = eventService;
     this.trainerService = trainerService;
